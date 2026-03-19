@@ -85,7 +85,7 @@ export default StyleSheet.create({
     padding: 16,
     borderRadius: 16,
     borderWidth: 1,
-    marginBottom: 20,
+    marginBottom: 16,
   },
   addressLabelRow: {
     flexDirection: 'row',
@@ -103,6 +103,39 @@ export default StyleSheet.create({
     fontWeight: '500',
     lineHeight: 20,
     letterSpacing: 0.2,
+  },
+
+  // Title field
+  fieldWrapper: {
+    marginBottom: 20,
+  },
+  fieldLabel: {
+    fontSize: 10,
+    fontWeight: '700',
+    letterSpacing: 1,
+    marginBottom: 8,
+  },
+  titleInput: {
+    paddingHorizontal: 14,
+    paddingVertical: 13,
+    borderRadius: 14,
+    borderWidth: 1,
+    fontSize: 14,
+    fontWeight: '500',
+  },
+  fieldFooter: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 5,
+  },
+  errorText: {
+    fontSize: 11,
+    fontWeight: '500',
+  },
+  charCount: {
+    fontSize: 11,
+    marginLeft: 'auto',
   },
 
   // Save button

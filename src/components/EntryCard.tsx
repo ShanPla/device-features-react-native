@@ -21,15 +21,16 @@ export default function EntryCard({ entry, onRemove }: Props) {
   return (
     <View style={[styles.card, { backgroundColor: theme.card, borderColor: theme.cardBorder }]}>
       {/* Photo */}
-      <View style={styles.imageWrapper}>
-        <Image source={{ uri: entry.imageUri }} style={styles.image} />
-      </View>
+      <Image source={{ uri: entry.imageUri }} style={styles.image} />
 
       {/* Info */}
       <View style={styles.info}>
+        <Text style={[styles.title, { color: theme.text }]} numberOfLines={1}>
+          {entry.title}
+        </Text>
         <View style={styles.locationRow}>
-          <FontAwesome name="map-marker" size={13} color={theme.primary} style={styles.pinIcon} />
-          <Text style={[styles.address, { color: theme.text }]} numberOfLines={2}>
+          <FontAwesome name="map-marker" size={12} color={theme.primary} style={styles.pinIcon} />
+          <Text style={[styles.address, { color: theme.subText }]} numberOfLines={2}>
             {entry.address}
           </Text>
         </View>
@@ -55,46 +56,37 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     overflow: 'hidden',
   },
-  imageWrapper: {
-    position: 'relative',
-  },
   image: {
     width: '100%',
     height: 200,
     resizeMode: 'cover',
   },
-  imageOverlay: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    height: 60,
-    opacity: 0.6,
-  },
   info: {
     padding: 14,
     paddingBottom: 10,
+    gap: 5,
+  },
+  title: {
+    fontSize: 15,
+    fontWeight: '700',
+    letterSpacing: 0.2,
   },
   locationRow: {
     flexDirection: 'row',
     alignItems: 'flex-start',
     gap: 6,
-    marginBottom: 6,
   },
   pinIcon: {
     marginTop: 2,
   },
   address: {
     flex: 1,
-    fontSize: 14,
-    fontWeight: '600',
-    letterSpacing: 0.2,
-    lineHeight: 20,
+    fontSize: 12,
+    lineHeight: 18,
   },
   date: {
     fontSize: 11,
     letterSpacing: 0.3,
-    marginLeft: 19,
   },
   removeButton: {
     flexDirection: 'row',

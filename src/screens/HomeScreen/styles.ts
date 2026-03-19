@@ -4,16 +4,34 @@ export default StyleSheet.create({
   container: {
     flex: 1,
   },
+  searchWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginHorizontal: 16,
+    marginTop: 16,
+    marginBottom: 4,
+    paddingHorizontal: 14,
+    paddingVertical: 11,
+    borderRadius: 14,
+    borderWidth: 1,
+    gap: 10,
+  },
+  searchInput: {
+    flex: 1,
+    fontSize: 14,
+    paddingVertical: 0,
+  },
   listContent: {
     padding: 16,
-    paddingTop: 20,
+    paddingTop: 12,
   },
   emptyContainer: {
-    flex: 1,
+    minHeight: 300,
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 40,
     gap: 12,
+    paddingTop: 60,
   },
   emptyIconCircle: {
     width: 80,
