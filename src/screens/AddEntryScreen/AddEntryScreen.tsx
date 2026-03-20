@@ -1,8 +1,8 @@
-import React, { useState, useCallback, useRef } from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 import {
   View, Text, Image, TouchableOpacity,
   Alert, ScrollView, ActivityIndicator,
-  KeyboardAvoidingView, Platform, TextInput, Keyboard,
+  KeyboardAvoidingView, Platform, TextInput, Keyboard, BackHandler,
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import * as Location from 'expo-location';
@@ -40,6 +40,54 @@ export default function AddEntryScreen() {
   const [loading, setLoading] = useState(false);
   const [titleTouched, setTitleTouched] = useState(false);
 
+  // Use a ref so back handlers always see latest value without re-registering
+  const hasUnsavedChangesRef = useRef(false);
+  useEffect(() => {
+    hasUnsavedChangesRef.current = !!(imageUri || title.trim());
+  }, [imageUri, title]);
+
+  const confirmDiscard = (onConfirm: () => void) => {
+    if (hasUnsavedChangesRef.current) {
+      Alert.alert(
+        'Discard Entry?',
+        'You have unsaved changes. Are you sure you want to go back?',
+        [
+          { text: 'Stay', style: 'cancel' },
+          { text: 'Discard', style: 'destructive', onPress: onConfirm },
+        ]
+      );
+    } else {
+      onConfirm();
+    }
+  };
+
+  // Register hardware back button and header back button once on focus
+  useFocusEffect(
+    useCallback(() => {
+      // Header back button
+      navigation.setOptions({
+        headerLeft: () => (
+          <TouchableOpacity
+            onPress={() => confirmDiscard(() => navigation.goBack())}
+            style={{ paddingRight: 12 }}
+          >
+            <FontAwesome name="chevron-left" size={16} color={theme.text} />
+          </TouchableOpacity>
+        ),
+      });
+
+      // Hardware back button
+      const onBackPress = () => {
+        confirmDiscard(() => navigation.goBack());
+        return true;
+      };
+
+      const subscription = BackHandler.addEventListener('hardwareBackPress', onBackPress);
+      return () => subscription.remove();
+    }, [theme.text])
+  );
+
+  // Clear fields when screen loses focus (user navigated away)
   useFocusEffect(
     useCallback(() => {
       return () => {
@@ -47,12 +95,12 @@ export default function AddEntryScreen() {
         setAddress(null);
         setTitle('');
         setTitleTouched(false);
+        hasUnsavedChangesRef.current = false;
       };
     }, [])
   );
 
   const handleTakePhoto = async () => {
-    // Dismiss keyboard before opening camera so it doesn't reappear after
     Keyboard.dismiss();
 
     const { status } = await ImagePicker.requestCameraPermissionsAsync();

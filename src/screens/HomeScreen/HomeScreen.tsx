@@ -1,6 +1,6 @@
 import React, { useCallback, useState, useMemo } from 'react';
 import {
-  View, Text, FlatList, TouchableOpacity, Alert, TextInput, ScrollView,
+  View, Text, FlatList, TouchableOpacity, Alert, TextInput, ScrollView, BackHandler,
 } from 'react-native';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -30,6 +30,22 @@ export default function HomeScreen() {
         setEntries(data);
       };
       load();
+
+      // Hardware back button — show exit confirmation
+      const onBackPress = () => {
+        Alert.alert(
+          'Exit App',
+          'Are you sure you want to exit?',
+          [
+            { text: 'Cancel', style: 'cancel' },
+            { text: 'Exit', style: 'destructive', onPress: () => BackHandler.exitApp() },
+          ]
+        );
+        return true;
+      };
+
+      const subscription = BackHandler.addEventListener('hardwareBackPress', onBackPress);
+      return () => subscription.remove();
     }, [])
   );
 
